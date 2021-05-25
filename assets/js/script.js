@@ -72,7 +72,7 @@ function deselectAnswers() {
 }
 
 function getSelected() {
-    const answer
+    var answer
 
     answerEls.forEach(answerEl => {
         if(answerEl.checked) {
