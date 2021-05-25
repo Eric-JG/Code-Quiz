@@ -1,44 +1,107 @@
+// Array of Question
 const quizData = [
     {
         question: "What does CSS stand for?",
-        1:"Cascading Style Sheets",
-        2:"Cascading Simple Sheets",
-        3:"Central Style Sheets",
-        4:"Cars SUVs Sailboats",
-        correct:"1",
+        a:"Cascading Style Sheets",
+        b:"Cascading Simple Sheets",
+        c:"Central Style Sheets",
+        d:"Cars SUVs Sailboats",
+        correct:"a",
     },
     {
         question: "What does HTML stand for?",
-        1:"Hypertext Markdown Language",
-        2:"Hyperloop Machine Language",
-        3:"Hypertext Markup Language",
-        4:"Helicopter Terminals Motorcicle",
-        correct:"3",
+        a:"Hypertext Markdown Language",
+        b:"Hyperloop Machine Language",
+        c:"Hypertext Markup Language",
+        d:"Helicopter Terminals Motorcicle",
+        correct:"c",
     },
     {
         question:"In what year JavaScript launched",
-        1:"1999",
-        2:"2000",
-        3:"1994",
-        4:"1995",
-        correct:"4",
+        a:"1999",
+        b:"2000",
+        c:"1994",
+        d:"1995",
+        correct:"d",
     },
     {
         question:"Who created Bootstrap",
-        1:"Twitter",
-        2:"Amazon",
-        3:"Facebook",
-        4:"None of the above",
-        correct:"1",
+        a:"Twitter",
+        b:"Amazon",
+        c:"Facebook",
+        d:"None of the above",
+        correct:"a",
     },
     {
         question:"When HTML was invented",
-        1:"1990",
-        2:"1993",
-        3:"2000",
-        4:"2021",
-        correct:"2",
+        a:"1990",
+        b:"1993",
+        c:"2000",
+        d:"2021",
+        correct:"b",
     },
 ];
 
-var quiz = document.getElementById('quiz')
+const quiz = document.getElementById('quiz')
+const answerEls = document.querySelectorAll('.answer')
+const questionEl = document.getElementById('question')
+const a_text = document.getElementById('a_text')
+const b_text = document.getElementById('b_text')
+const c_text = document.getElementById('c_text')
+const d_text = document.getElementById('d_text')
+const submitBtn = document.getElementById('submit')
+
+var currentQuiz = 0
+var score = 0
+
+loadQuiz()
+
+function loadQuiz() {
+    deselectAnswers()
+    const currentQuizData = quizData[currentQuiz]
+    // Question elements
+    questionEl.innerText = currentQuizData.question
+    a_text.innerText = currentQuizData.a
+    b_text.innerText = currentQuizData.b
+    c_text.innerText = currentQuizData.c
+    d_text.innerText = currentQuizData.d
+}
+// Deselect the answer for next question
+function deselectAnswers() {
+    answerEls.forEach(answerEl => answerEl.checked = false)
+}
+
+function getSelected() {
+    const answer
+
+    answerEls.forEach(answerEl => {
+        if(answerEl.checked) {
+            answer = answerEl.id
+        }
+    })
+    return answer
+}
+
+submitBtn.addEventListener('click', () => {
+    const answer = getSelected()
+
+    // Check if answer is equal to quiz data 
+    if (answer) {
+        if(answer === quizData[currentQuiz].correct) {
+            score++
+        }
+
+        currentQuiz++
+
+        // Load the next question
+        if(currentQuiz < quizData.length) {
+            loadQuiz()
+            // Last question
+        } else {
+            quiz.innerHTML = `
+            <h2>You answered ${score}/${quizData.length} questions correctly <h2>
+            
+            <button onclick="location.reload()">Reload</button>`
+        }
+    }
+})
