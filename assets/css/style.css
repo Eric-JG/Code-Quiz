@@ -3,7 +3,6 @@
 }
 
 body {
-    background-color:gray;
     font-family:Arial, Helvetica, sans-serif;
     display: flex;
     align-items: center;
@@ -11,6 +10,12 @@ body {
     height: 100vh;
     overflow: hidden;
     margin: 0;
+}
+
+.score {
+    height: 75vh;
+    font-size: 25px;
+    text-align: left;
 }
 
 .quiz-container {

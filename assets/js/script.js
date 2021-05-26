@@ -2,43 +2,43 @@
 const quizData = [
     {
         question: "What does CSS stand for?",
-        a:"Cascading Style Sheets",
-        b:"Cascading Simple Sheets",
-        c:"Central Style Sheets",
-        d:"Cars SUVs Sailboats",
-        correct:"a",
+        a: "Cascading Style Sheets",
+        b: "Cascading Simple Sheets",
+        c: "Central Style Sheets",
+        d: "Cars SUVs Sailboats",
+        correct: "a",
     },
     {
         question: "What does HTML stand for?",
-        a:"Hypertext Markdown Language",
-        b:"Hyperloop Machine Language",
-        c:"Hypertext Markup Language",
-        d:"Helicopter Terminals Motorcicle",
-        correct:"c",
+        a: "Hypertext Markdown Language",
+        b: "Hyperloop Machine Language",
+        c: "Hypertext Markup Language",
+        d: "Helicopter Terminals Motorcicle",
+        correct: "c",
     },
     {
-        question:"In what year JavaScript launched",
-        a:"1999",
-        b:"2000",
-        c:"1994",
-        d:"1995",
-        correct:"d",
+        question: "In what year JavaScript launched",
+        a: "1999",
+        b: "2000",
+        c: "1994",
+        d: "1995",
+        correct: "d",
     },
     {
-        question:"Who created Bootstrap",
-        a:"Twitter",
-        b:"Amazon",
-        c:"Facebook",
-        d:"None of the above",
-        correct:"a",
+        question: "Who created Bootstrap",
+        a: "Twitter",
+        b: "Amazon",
+        c: "Facebook",
+        d: "None of the above",
+        correct: "a",
     },
     {
-        question:"When HTML was invented",
-        a:"1990",
-        b:"1993",
-        c:"2000",
-        d:"2021",
-        correct:"b",
+        question: "When HTML was invented",
+        a: "1990",
+        b: "1993",
+        c: "2000",
+        d: "2021",
+        correct: "b",
     },
 ];
 
@@ -54,6 +54,8 @@ const submitBtn = document.getElementById('submit')
 var currentQuiz = 0
 var score = 0
 
+var localStorageData = JSON.parse(localStorage.getItem("scores")) || []
+
 loadQuiz()
 
 function loadQuiz() {
@@ -66,6 +68,8 @@ function loadQuiz() {
     c_text.innerText = currentQuizData.c
     d_text.innerText = currentQuizData.d
 }
+
+
 // Deselect the answer for next question
 function deselectAnswers() {
     answerEls.forEach(answerEl => answerEl.checked = false)
@@ -75,7 +79,7 @@ function getSelected() {
     var answer
 
     answerEls.forEach(answerEl => {
-        if(answerEl.checked) {
+        if (answerEl.checked) {
             answer = answerEl.id
         }
     })
@@ -87,21 +91,36 @@ submitBtn.addEventListener('click', () => {
 
     // Check if answer is equal to quiz data 
     if (answer) {
-        if(answer === quizData[currentQuiz].correct) {
+        if (answer === quizData[currentQuiz].correct) {
             score++
         }
 
         currentQuiz++
 
         // Load the next question
-        if(currentQuiz < quizData.length) {
+        if (currentQuiz < quizData.length) {
             loadQuiz()
+
             // Last question
         } else {
             quiz.innerHTML = `
             <h2>You answered ${score}/${quizData.length} questions correctly <h2>
-            
-            <button onclick="location.reload()">Reload</button>`
+            <input id="playerName" type="text"/><button onclick="saveScore()">Submit</button>
+            <button onclick="location.reload()">Reload</button>
+            `
         }
     }
 })
+
+function saveScore(event) {
+    var inputPlayer = quiz.querySelector("#playerName")
+
+    var newScoreObject = {
+        name: inputPlayer.value,
+        score: score
+    }
+
+    localStorageData.push(newScoreObject)
+
+    localStorage.setItem("scores", JSON.stringify(localStorageData))
+}
