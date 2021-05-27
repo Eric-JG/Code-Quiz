@@ -51,12 +51,24 @@ const c_text = document.getElementById('c_text')
 const d_text = document.getElementById('d_text')
 const submitBtn = document.getElementById('submit')
 
+var timer = 0
 var currentQuiz = 0
 var score = 0
 
 var localStorageData = JSON.parse(localStorage.getItem("scores")) || []
 
 loadQuiz()
+
+var interval = setInterval(function(){
+    document.getElementById('count').innerHTML=count;
+    count--;
+    if (count === 0){
+      clearInterval(interval);
+      document.getElementById('count').innerHTML='Done';
+      // or...
+      alert("You're out of time!");
+    }
+  }, 1000);
 
 function loadQuiz() {
     deselectAnswers()
@@ -103,9 +115,11 @@ submitBtn.addEventListener('click', () => {
 
             // Last question
         } else {
+            // Create button at the end
             quiz.innerHTML = `
             <h2>You answered ${score}/${quizData.length} questions correctly <h2>
-            <input id="playerName" type="text"/><button onclick="saveScore()">Submit</button>
+            <input id="playerName" type="text"/>
+            <button onclick="saveScore()">Submit</button>
             <button onclick="location.reload()">Reload</button>
             `
         }
